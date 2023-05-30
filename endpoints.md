@@ -32,7 +32,7 @@ None
 
 ### Return Values
 - `id`: The challenge's ID.
-- `type`: The challenge's type. Is either `standard` or `dynamic`
+- `type`: The challenge's type. Is either `standard`, `dynamic` or `hidden`. (Hidden challenges are a special type of challenge that is caused by a challenge requiring another challenge to be solved first. There should be no other place where this appears.)
 - `name`: The challenge's name.
 - `value`: The challenge's current value.
 - `solves`: The number of solves for the challenge.
@@ -111,7 +111,15 @@ None
 Creates a new challenge.
 
 ### Parameters
-TODO
+- `name`: The challenge's name.
+- `category`: The challenge's category.
+- `description`: The challenge's description.
+- `value`: The challenge's value.
+- `initial`: The challenge's initial value. (For dynamic challenges only)
+- `decay`: The challenge's decay value. (For dynamic challenges only)
+- `minimum`: The challenge's minimum value. (For dynamic challenges only)
+- `state`: The challenge's state. Is either `visible` or `hidden`. (Optional)
+- `type`: The challenge's type. Is either `standard` or `dynamic`.
 
 ### Response
 ```json
@@ -157,7 +165,17 @@ TODO
 Updates a challenge.
 
 ### Parameters
-TODO
+- `name`: The challenge's name. (Optional)
+- `category`: The challenge's category. (Optional)
+- `description`: The challenge's description. (Optional)
+- `connection_info`: The challenge's connection info. (Optional)
+- `value`: The challenge's value. (Optional) (For standard challenges only)
+- `initial`: The challenge's initial value. (For dynamic challenges only) (Optional)
+- `decay`: The challenge's decay value. (For dynamic challenges only) (Optional)
+- `minimum`: The challenge's minimum value. (For dynamic challenges only) (Optional)
+- `max_attempts`: The challenge's maximum number of attempts. (Optional)
+- `state`: The challenge's state. Is either `visible` or `hidden`. (Optional)
+
 
 ### Response
 ```json
@@ -173,7 +191,7 @@ TODO
     "description": "test",
     "connection_info": null,
     "next_id": 0,
-    "category": "",
+    "category": "string",
     "state": "visible",
     "max_attempts": 0,
     "type": "standard",
