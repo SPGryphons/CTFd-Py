@@ -1,7 +1,7 @@
 from CTFdPy.csv import CSVHandler
 from CTFdPy.client import Client
 
-API_KEY = "f976c2756984558face3245bfcc92ab6dba4fe3c10c2533d2a1dbb6fbfb0d639"
+API_KEY = "<API_KEY>"
 URL = "http://test.gryphons.sg/"
 client = Client(API_KEY, URL)
 
