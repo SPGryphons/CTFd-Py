@@ -211,5 +211,3 @@ None
   "success": true
 }
 ```
-
-## `GET /challenges/<int:challenge_id>/solves`
