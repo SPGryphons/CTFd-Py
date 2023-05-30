@@ -1,5 +1,4 @@
-# Challenge constants
-
+# Challenge Constants
 class ChallengeType:
     standard = "standard"
     dynamic = "dynamic"
