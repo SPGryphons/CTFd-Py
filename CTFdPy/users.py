@@ -12,7 +12,8 @@ class User:
     # TODO: Add all parameters
 
     def __post_init__(self):
-        self.password = self._generate_password()
+        if self.password is None or self.password == "":
+            self.password = self._generate_password()
 
     @staticmethod
     def _generate_password() -> str:

@@ -69,7 +69,7 @@ class Client:
         """Creates a user"""
         res = self._post("users", user.to_dict())
         if res["success"]:
-            return True
+            return user.to_dict()
             # Do this for now until I have time to fully implement users
             # return User(**res["data"])
         
