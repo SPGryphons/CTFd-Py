@@ -1,5 +1,5 @@
 import requests
-from typing import Any, TypedDict, overload
+from typing import Any, Literal, TypedDict, overload
 
 from CTFdPy.constants import ChallengeType, ChallengeState, FlagType
 from CTFdPy.challenges import Challenge
@@ -110,6 +110,8 @@ class Client:
         
         raise Exception(res["errors"])
     
+    # TODO: Fix this to take in challenge or challenge id
+
     def create_flag(
         self,
         flag: str,
@@ -169,206 +171,226 @@ class Client:
 
     # Challenge related operations
 
-    def get_challenge(self, challenge_id: int) -> Challenge:
-        """Gets a challenge by id"""
-        res = self._get(f"challenges/{challenge_id}")
-        if res["success"]:
-            return Challenge(**res["data"])
+    # TODO: Refactor this to use the new challenge data types
+
+    # def get_challenge(self, challenge_id: int) -> Challenge:
+    #     """Gets a challenge by id"""
+    #     res = self._get(f"challenges/{challenge_id}")
+    #     if res["success"]:
+    #         return Challenge(**res["data"])
         
-        raise Exception(res["errors"])
+    #     raise Exception(res["errors"])
     
     
-    def get_challenges(self) -> list[Challenge]:
-        """Gets all challenges"""
-        res = self._get("challenges")
-        if res["success"]:
-            return [Challenge(**challenge) for challenge in res["data"]]
+    # def get_challenges(self) -> list[Challenge]:
+    #     """Gets all challenges"""
+    #     res = self._get("challenges")
+    #     if res["success"]:
+    #         return [Challenge(**challenge) for challenge in res["data"]]
         
-        raise Exception(res["errors"])
+    #     raise Exception(res["errors"])
     
 
-    def _create_challenge(self, challenge: Challenge, flag: Flag) -> tuple[Challenge, Flag]:
-        """Creates a challenge"""
-        res = self._post("challenges", challenge.to_dict())
-        if res["success"]:
-            challenge = Challenge(**res["data"])
+    # def _create_challenge(self, challenge: Challenge, flag: Flag) -> tuple[Challenge, Flag]:
+    #     """Creates a challenge"""
+    #     res = self._post("challenges", challenge.to_dict())
+    #     if res["success"]:
+    #         challenge = Challenge(**res["data"])
 
-            # Create the flag
-            flag = Flag(flag.content, flag.data, flag.type, challenge_id=challenge.id)
-            flag = self._create_flag(flag)
+    #         # Create the flag
+    #         flag.challenge_id = challenge.id
+    #         flag = self._create_flag(flag)
 
-            if res["success"]:
-                return challenge, flag
+    #         if res["success"]:
+    #             return challenge, flag
         
-        raise Exception(res["errors"])
+    #     raise Exception(res["errors"])
     
-    @overload
-    def create_challenge(
-        self,
-        name: str,
-        category: str,
-        description: str,
-        flag: str,
-        type: str = ChallengeType.standard,
-        flag_type: str = FlagType.static,
-        case_insensitive: bool = False,
-        *,
-        value: int | None = None,
-        state: str | None = None,
-        connection_info: str | None = None,
-        max_attempts: int | None = None,
-        requirements: list[Challenge] | None = None
-    ) -> tuple[Challenge, Flag]:
-        ...
+    # @overload
+    # def create_challenge(
+    #     self,
+    #     name: str,
+    #     category: str,
+    #     description: str,
+    #     flag: str,
+    #     type: str = ChallengeType.standard,
+    #     flag_type: str = FlagType.static,
+    #     case_insensitive: bool = False,
+    #     *,
+    #     value: int | None = None,
+    #     state: str | None = None,
+    #     connection_info: str | None = None,
+    #     max_attempts: int | None = None,
+    #     requirements: list[Challenge] | None = None
+    # ) -> tuple[Challenge, Flag]:
+    #     ...
 
-    @overload
-    def create_challenge(
-        self,
-        name: str,
-        category: str,
-        description: str,
-        flag: str,
-        type: str = ChallengeType.dynamic,
-        flag_type: str = FlagType.static,
-        case_insensitive: bool = False,
-        *,
-        initial: int | None = None,
-        minimum: int | None = None,
-        decay: int | None = None,
-        state: str | None = None,
-        connection_info: str | None = None,
-        max_attempts: int | None = None,
-        requirements: list[Challenge] | None = None
-    ) -> tuple[Challenge, Flag]:
-        ...
+    # @overload
+    # def create_challenge(
+    #     self,
+    #     name: str,
+    #     category: str,
+    #     description: str,
+    #     flag: str,
+    #     type: str = ChallengeType.dynamic,
+    #     flag_type: str = FlagType.static,
+    #     case_insensitive: bool = False,
+    #     *,
+    #     initial: int | None = None,
+    #     minimum: int | None = None,
+    #     decay: int | None = None,
+    #     state: str | None = None,
+    #     connection_info: str | None = None,
+    #     max_attempts: int | None = None,
+    #     requirements: list[Challenge] | None = None
+    # ) -> tuple[Challenge, Flag]:
+    #     ...
     
-    def create_challenge(
-        self,
-        name: str,
-        category: str,
-        description: str,
-        flag: str,
-        type: str = ChallengeType.standard,
-        flag_type: str = FlagType.static,
-        case_insensitive: bool = False,
-        *,
-        value: int | None = None,
-        initial: int | None = None,
-        minimum: int | None = None,
-        decay: int | None = None,
-        state: str | None = None,
-        connection_info: str | None = None,
-        max_attempts: int | None = None
-    ) -> tuple[Challenge, Flag]:
-        """Creates a challenge
-        Challenge can either be a standard challenge or a dynamic challenge
+    # def create_challenge(
+    #     self,
+    #     name: str,
+    #     category: str,
+    #     description: str,
+    #     flag: str,
+    #     type: str = ChallengeType.standard,
+    #     flag_type: str = FlagType.static,
+    #     case_insensitive: bool = False,
+    #     *,
+    #     value: int | None = None,
+    #     initial: int | None = None,
+    #     minimum: int | None = None,
+    #     decay: int | None = None,
+    #     state: str = ChallengeState.hidden,
+    #     connection_info: str | None = None,
+    #     max_attempts: int | None = None
+    # ) -> tuple[Challenge, Flag]:
+    #     """Creates a challenge
+    #     Challenge can either be a standard challenge or a dynamic challenge
 
-        Standard challenges require a value parameter
-        Dynamic challenges require initial, minimum, and decay parameters
+    #     Standard challenges require a value parameter
+    #     Dynamic challenges require initial, minimum, and decay parameters
 
-        Note that `value`, `initial`, `minimum`, `decay` are keyword-only arguments
+    #     Note that `value`, `initial`, `minimum`, `decay` are keyword-only arguments
 
-        Flag can either be a static flag or a regex flag
-        """
-        if type == ChallengeType.standard:
-            if value is None:
-                raise ValueError("Standard challenges require a value parameter")
-            if any([initial, minimum, decay]):
-                raise ValueError("Standard challenges cannot have initial, minimum, or decay parameters")
+    #     Flag can either be a static flag or a regex flag
+    #     """
+    #     if type == ChallengeType.standard:
+    #         if value is None:
+    #             raise ValueError("Standard challenges require a value parameter")
+    #         if any([initial, minimum, decay]):
+    #             raise ValueError("Standard challenges cannot have initial, minimum, or decay parameters")
             
-            challenge = Challenge(name, category, description, type, value=value)
+    #         challenge = Challenge(name, category, description, type, value=value)
 
-        elif type == ChallengeType.dynamic:
-            if not all([initial, minimum, decay]):
-                raise ValueError("Dynamic challenges require initial, minimum, and decay parameters")
-            if value is not None:
-                raise ValueError("Dynamic challenges cannot have a value parameter")
+    #     elif type == ChallengeType.dynamic:
+    #         if not all([initial, minimum, decay]):
+    #             raise ValueError("Dynamic challenges require initial, minimum, and decay parameters")
+    #         if value is not None:
+    #             raise ValueError("Dynamic challenges cannot have a value parameter")
 
-            challenge = Challenge(name, category, description, type, initial=initial, minimum=minimum, decay=decay)
-        else:
-            raise ValueError("Invalid challenge type")
+    #         challenge = Challenge(name, category, description, type, initial=initial, minimum=minimum, decay=decay)
+    #     else:
+    #         raise ValueError("Invalid challenge type")
         
-        if flag is not None:
-            flag = Flag(flag,"case_insensitive" if case_insensitive else "", flag_type)
+    #     if flag is not None:
+    #         flag = Flag(flag, "case_insensitive" if case_insensitive else "", flag_type)
         
-        challenge, flag = self._create_challenge(challenge, flag)
+    #     challenge, flag = self._create_challenge(challenge, flag)
 
-        # Check if we need to make a PATCH request for the remaining parameters
-        if any([state, connection_info, max_attempts]): # This should be fine
-            # TODO: Implement requirements
-            challenge = self.update_challenge(
-                challenge.id,
-                state=state,
-                connection_info=connection_info,
-                max_attempts=max_attempts
-            )
+    #     # Check if we need to make a PATCH request for the remaining parameters
+    #     if any([state, connection_info, max_attempts]): # This should be fine
+    #         # TODO: Implement requirements
+    #         challenge = self.update_challenge(
+    #             challenge.id,
+    #             state=state,
+    #             connection_info=connection_info,
+    #             max_attempts=max_attempts
+    #         )
 
 
-    def _update_challenge(self, challenge: Challenge) -> Challenge:
-        """Updates a challenge"""
-        res = self._patch(f"challenges/{challenge.id}", challenge.to_dict())
-        if res["success"]:
-            return Challenge(**res["data"])
+    # def _update_challenge(self, challenge: Challenge) -> Challenge:
+    #     """Updates a challenge"""
+    #     res = self._patch(f"challenges/{challenge.id}", challenge.to_dict())
+    #     if res["success"]:
+    #         return Challenge(**res["data"])
         
-        raise Exception(res["errors"])
+    #     raise Exception(res["errors"])
     
-    @overload
-    def update_challenge(
-        self,
-        challenge: Challenge,
-        /,
-        name: str | None = None,
-        category: str | None = None,
-        description: str | None = None,
-        type: str | None = None,
-        value: int | None = None,
-        initial: int | None = None,
-        minimum: int | None = None,
-        decay: int | None = None,
-        state: str | None = None,
-        connection_info: str | None = None,
-        max_attempts: int | None = None,
-        requirements: dict[str, str | int] | None = None,
-        next_id: int | None = None
-    ) -> Challenge:
-        ...
+    # @overload
+    # def update_challenge(
+    #     self,
+    #     challenge: Challenge,
+    #     /,
+    #     name: str | None = None,
+    #     category: str | None = None,
+    #     description: str | None = None,
+    #     type: str | None = None,
+    #     value: int | None = None,
+    #     initial: int | None = None,
+    #     minimum: int | None = None,
+    #     decay: int | None = None,
+    #     state: str | None = None,
+    #     connection_info: str | None = None,
+    #     max_attempts: int | None = None,
+    #     next_id: Challenge | None = None
+    # ) -> Challenge:
+    #     ...
 
-    @overload
-    def update_challenge(
-        self,
-        challenge_id: int,
-        /,
-        name: str | None = None,
-        category: str | None = None,
-        description: str | None = None,
-        type: str | None = None,
-        value: int | None = None,
-        initial: int | None = None,
-        minimum: int | None = None,
-        decay: int | None = None,
-        state: str | None = None,
-        connection_info: str | None = None,
-        max_attempts: int | None = None,
-        requirements: dict[str, str | int] | None = None,
-        next_id: int | None = None
-    ) -> Challenge:
-        ...
+    # @overload
+    # def update_challenge(
+    #     self,
+    #     challenge_id: int,
+    #     /,
+    #     name: str | None = None,
+    #     category: str | None = None,
+    #     description: str | None = None,
+    #     type: str | None = None,
+    #     value: int | None = None,
+    #     initial: int | None = None,
+    #     minimum: int | None = None,
+    #     decay: int | None = None,
+    #     state: str | None = None,
+    #     connection_info: str | None = None,
+    #     max_attempts: int | None = None,
+    #     requirements: list[Challenge] | None = None,
+    #     anonymize: Literal[True] | None = None,
+    #     next_id: Challenge | None = None
+    # ) -> Challenge:
+    #     ...
     
-    def update_challenge(self, challenge_or_id: Challenge | int, /, **kwargs) -> Challenge:
-        """Updates a challenge
-        You can pass either a challenge object or a challenge id
-        It's recommended to pass a challenge object as it's easier to work with at the moment
-        """
-        if isinstance(challenge_or_id, Challenge):
-            challenge = challenge_or_id
-            kwargs = challenge.to_dict()
-            kwargs.update(kwargs)
-        else:
-            challenge = self.get_challenge(challenge_or_id)
-            kwargs = challenge.to_dict()
-            kwargs.update(kwargs)
+    # def update_challenge(self, challenge_or_id: Challenge | int, /, **kwargs) -> Challenge:
+    #     """Updates a challenge
+    #     You can pass either a challenge object or a challenge id
+    #     """
+    #     requirements = kwargs.pop("requirements", None)
+    #     anonymize = kwargs.pop("anonymize", None)
+    #     next_id = kwargs.pop("next_challenge", None)
+
+    #     if isinstance(challenge_or_id, Challenge):
+    #         if anonymize or requirements:
+    #             raise ValueError("Anonymize and requirements cannot be set when passing a challenge object")
+
+    #         challenge = challenge_or_id
+
+    #         # TODO: Probably implement this better
+    #         kwargs = challenge.to_dict()
+    #         kwargs.update(kwargs)
+    #         challenge = Challenge(**kwargs)
+    #     else:
+    #         if anonymize and requirements is None:
+    #             raise ValueError("Anonymize requires requirements to be set")
+    #         challenge = Challenge(**kwargs)
+    #         challenge.set_requirements(requirements, anonymize)
+
+    #     if next_id is not None:
+    #         if not isinstance(next_id, Challenge):
+    #             raise ValueError("Next challenge must be of type Challenge")
+    #         if next_id.id is None:
+    #             raise ValueError("Challenge must be created before it can be used as a next challenge")
+    #         else:
+    #             challenge.next_id = next_id.id
         
-        return self._update_challenge(challenge)
+    #     return self._update_challenge(challenge)
     
-    # TODO: Implement delete_challenge
-    # Fully implement update_challenge
+    # # TODO: Implement delete_challenge
+    # # Fully implement update_challenge
