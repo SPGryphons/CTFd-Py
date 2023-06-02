@@ -1,8 +1,8 @@
 from CTFdPy.csv import CSVHandler
 from CTFdPy.client import Client
 
-API_KEY = "<API_KEY>"
-URL = "http://test.gryphons.sg/"
+API_KEY = "<YOUR_API_KEY>"
+URL = "<YOUR_CTFD_URL>"
 client = Client(API_KEY, URL)
 
 # Example user creation
