@@ -1,25 +1,52 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TypedDict
+from typing import TypedDict, Literal
 
 from CTFdPy.constants import ChallengeType
-
+from CTFdPy.models import Model
+from CTFdPy.types.challenges import (
+    ChallengePreviewPayload,
+    ChallengePayload,
+    DynamicChallengePayload,
+    PartialChallengePayload,
+    PartialDynamicChallengePayload
+)
 
 class ChallengeRequirements(TypedDict):
     prerequisites: list[int]
-    anonymize: bool | None
+    anonymize: Literal[True] | None
 
 
 @dataclass
-class Challenge:
-    name: str
-    category: str
-    description: str
+class ChallengePreview(Model[ChallengePreviewPayload]):
+    """Represents a challenge preview
+
+    This should not be created manually
+    """
+    id: int = None
+    name: str = None
+    type: str = None
+    value: int = None
+    category: str = None
+    solves: int = None
+    solved_by_me: bool = None
+    tags: list[str] = None
+
+
+@dataclass
+class PartialChallenge(Model[PartialChallengePayload | PartialDynamicChallengePayload]):
+    """Represents a partial challenge
+
+    Note that this may not contain all parameters of a challenge
+    """
+    name: str = None
+    category: str = None
+    description: str = None
+    connection_info: str | None = None
     type: str = ChallengeType.standard
 
-    # Server will still give this parameter even if it's dynamic, guessing it's an implementation detail
-    # Do as I say, not as I do huh
+    # Server will still give this parameter even if it's dynamic
     value: int | None = None
 
     # Paremeters for dynamic challenges
@@ -30,12 +57,39 @@ class Challenge:
     # Parameters only set by the server
     # DO NOT manually set these if not bad things will happen
     id: int | None = None
+    attempts: int | None = None
     solves: int | None = None
     solved_by_me: bool | None = None
 
-    # This seems to be used for internal purposes so pls ignore
-    # I'm not sure what it does but it's probably important
-    type_data: dict[str, str] | None = None
+    files: list[str] | None = None
+
+
+@dataclass
+class Challenge(Model[ChallengePayload | DynamicChallengePayload]):
+    """Represents a challenge"""
+    name: str = None
+    category: str = None
+    description: str = None
+    type: str = ChallengeType.standard
+
+    # Server will still give this parameter even if it's dynamic
+    value: int | None = None
+
+    # Paremeters for dynamic challenges
+    initial: int | None = None
+    minimum: int | None = None
+    decay: int | None = None
+
+    # Parameters only set by the server
+    # DO NOT manually set these if not bad things will happen
+    id: int | None = None
+    attempts: int | None = None
+    solves: int | None = None
+    solved_by_me: bool | None = None
+
+    files: list[str] | None = None # Not implemented by us yet
+    tags: list[str] | None = None # Not implemented by us yet
+    hints: list[dict[str, str]] | None = None # Not implemented by us yet
 
     # Parameters that can only be set with PATCH requests
     # Hence over here they will be read-only
@@ -58,6 +112,19 @@ class Challenge:
             raise ValueError("Invalid challenge type")
         
 
+    def set_requirements(self, prerequisites: list[Challenge], anonymize: Literal[True] | None = None):
+        requirements = {"prerequisites": []}
+        for prerequisite in prerequisites:
+            if not isinstance(prerequisite, Challenge):
+                raise ValueError("Prerequisites must be of type Challenge")
+            if prerequisite.id is None:
+                raise ValueError("Challenge must be created before it can be used as a prerequisite")
+            requirements["prerequisites"].append(prerequisite.id)
+        if anonymize is not None:
+            requirements["anonymize"] = anonymize
+        self.requirements = requirements
+            
+        
     def to_dict(self) -> dict[str, str]:
         """Returns a dictionary representation of the challenge"""
         if self.type == ChallengeType.standard:
