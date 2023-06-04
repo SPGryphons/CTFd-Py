@@ -242,6 +242,164 @@ None
 }
 ```
 
+## `GET /challenges/<int:challenge_id>/files`
+Gets a challenge's files.
+
+### Parameters
+None
+
+### Response
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 0,
+      "type": "string",
+      "location": "string"
+    }
+  ]
+}
+```
+
+### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `id` | `int` | The file's ID. |
+| `type` | `string` | The file's type. Not exactly documented, seems to always be `challenge` |
+| `location` | `string` | The file's location. |
+
+
+# `GET /challenges/<int:challenge_id>/flags`
+Gets a challenge's flags.
+
+### Parameters
+None
+
+### Response
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 0,
+      "challenge": 0,
+      "type": "string",
+      "data": "string",
+      "challenge_id": 0,
+      "content": "string"
+    }
+  ]
+}
+```
+
+### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `id` | `int` | The flag's ID. |
+| `challenge` | `int` | The ID of the challenge the flag is attached to. |
+| `type` | `string` | The flag's type. This is either `static` or `regex` |
+| `data` | `string` | The flag's data. This seems to only be used for case-sensitivity. When it is case-insensitive, this is set to `case_insensitive`, else it is just an empty string. |
+| `challenge_id` | `int` | The ID of the challenge the flag is attached to. (Same value as `challenge`) |
+| `content` | `string` | The flag's content. |
+
+
+## `GET /challenges/<int:challenge_id>/hints`
+Gets a challenge's hints.
+
+### Parameters
+None
+
+### Response
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 0,
+      "challenge": 0,
+      "type": "string",
+      "challenge_id": 0,
+      "cost": 0,
+      "requirements": {
+        "prerequisites": [
+          0
+        ]
+      },
+      "content": "string"
+    }
+  ]
+}
+```
+
+### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `id` | `int` | The hint's ID. |
+| `challenge` | `int` | The ID of the challenge the hint is attached to. |
+| `type` | `string` | The hint's type. (This seems to be unused, will always be `standard`) |
+| `challenge_id` | `int` | The ID of the challenge the hint is attached to. (Same value as `challenge`) |
+| `cost` | `int` | The cost of the hint. |
+| `requirements` | `dict` | The hint's requirements. This dictionary has a single item, `prerequisites`, which is a list of hint IDs required to unlock before this one. (Optional) |
+| `content` | `string` | The hint's content. |
+
+
+## `GET /challenges/<int:challenge_id>/requirements`
+Gets a challenge's requirements.
+
+### Parameters
+None
+
+### Response
+```json
+{
+  "success": true,
+  "data": {
+    "prerequisites": [
+      0
+    ]
+  }  
+}
+```
+
+### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `prerequisites` | `list` | A list of prerequisite challenge IDs. |
+
+
+## `GET /challenges/<int:challenge_id>/solves`
+TODO
+
+
+## `GET /challenges/<int:challenge_id>/tags`
+Gets a challenge's tags.
+
+### Parameters
+None
+
+### Response
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 0,
+      "challenge_id": 0,
+      "value": "string"
+    }
+  ]
+}
+```
+
+### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `id` | `int` | The tag's ID. |
+| `challenge_id` | `int` | The ID of the challenge the tag is attached to. |
+| `value` | `string` | The tag's value. |
+
+
 ## `GET /challenges/<int:challenge_id>/topics`
 Gets a challenge's topics.
 
