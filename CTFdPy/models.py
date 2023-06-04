@@ -8,22 +8,20 @@ from typing import Generic, TypeVar
 DictT = TypeVar("DictT", bound=dict[str, any])
 
 
-@dataclass
 class Model(Generic[DictT]):
     """The base model for all models"""
-
-    _raw: DictT = None
+    _raw: DictT | None = None
 
     @classmethod
     def from_dict(cls, d: DictT) -> Model:
         """Creates a model from a dictionary, and ingnores any extra keys"""
-        return cls(
-            _raw=d,
+        c = cls(
             **{
                 k: v for k, v in d.items()
                 if k in cls.__dataclass_fields__.keys()
             }
         )
+        c._raw = d
     
     @property
     def _to_dict(self) -> DictT:

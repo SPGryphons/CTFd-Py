@@ -6,11 +6,11 @@ from typing import TypedDict, Literal
 from CTFdPy.constants import ChallengeType
 from CTFdPy.models import Model
 from CTFdPy.types.challenges import (
-    ChallengePreviewPayload,
-    ChallengePayload,
-    DynamicChallengePayload,
-    PartialChallengePayload,
-    PartialDynamicChallengePayload
+    ChallengePreviewDict,
+    ChallengeDict,
+    DynamicChallengeDict,
+    PartialChallengeDict,
+    PartialDynamicChallengeDict
 )
 
 class ChallengeRequirements(TypedDict):
@@ -19,7 +19,7 @@ class ChallengeRequirements(TypedDict):
 
 
 @dataclass
-class ChallengePreview(Model[ChallengePreviewPayload]):
+class ChallengePreview(Model[ChallengePreviewDict]):
     """Represents a challenge preview
 
     This should not be created manually
@@ -35,7 +35,7 @@ class ChallengePreview(Model[ChallengePreviewPayload]):
 
 
 @dataclass
-class PartialChallenge(Model[PartialChallengePayload | PartialDynamicChallengePayload]):
+class PartialChallenge(Model[PartialChallengeDict | PartialDynamicChallengeDict]):
     """Represents a partial challenge
 
     Note that this may not contain all parameters of a challenge
@@ -65,7 +65,7 @@ class PartialChallenge(Model[PartialChallengePayload | PartialDynamicChallengePa
 
 
 @dataclass
-class Challenge(Model[ChallengePayload | DynamicChallengePayload]):
+class Challenge(Model[ChallengeDict | DynamicChallengeDict]):
     """Represents a challenge"""
     name: str = None
     category: str = None

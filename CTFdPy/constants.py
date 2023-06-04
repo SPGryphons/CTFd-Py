@@ -13,3 +13,6 @@ class ChallengeState:
 class FlagType:
     static = "static"
     regex = "regex"
+
+CASE_SENSITIVE = ""
+CASE_INSENSITIVE = "case_insensitive"

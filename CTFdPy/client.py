@@ -34,6 +34,11 @@ class Client:
         """Sends a POST request to the server"""
         return self.session.post(f"{self.url}/api/v1/{endpoint}", json=data).json()
     
+    def _post_form(self, endpoint: str, data: dict[str, str | int], files: list | dict | None) -> APIResponse:
+        """Sends a POST request to the server with form data"""
+        r = self.session.post(f"{self.url}/api/v1/{endpoint}", data=data, files=files)
+        return r.json()
+
     def _patch(self, endpoint: str, data: dict[str, str | int]) -> APIResponse:
         """Sends a PATCH request to the server"""
         return self.session.patch(f"{self.url}/api/v1/{endpoint}", json=data).json()
