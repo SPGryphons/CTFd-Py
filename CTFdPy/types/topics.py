@@ -3,14 +3,14 @@ from __future__ import annotations
 from typing import TypedDict
 
 
-class TopicPayload(TypedDict):
+class TopicDict(TypedDict):
     id: int
     value: str
 
 
-class TopicCreatePayload(TypedDict):
+class TopicCreateDict(TypedDict):
     id: int
-    challenge: int
+    challenge: int | None
     challenge_id: int
     topic: int
     topic_id: int

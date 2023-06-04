@@ -3,15 +3,15 @@ from __future__ import annotations
 from typing import TypedDict
 
 
-class BaseChallenge(TypedDict):
-    id: int | None
+class BaseChallengeDict(TypedDict):
+    id: int
     name: str
     type: str
     value: int
     category: str
 
 
-class ChallengePreviewPayload(BaseChallenge):
+class ChallengePreviewDict(BaseChallengeDict):
     solves: int
     solved_by_me: bool
     tags: list[str]
@@ -19,7 +19,7 @@ class ChallengePreviewPayload(BaseChallenge):
     script: str # You can ignore this
 
 
-class PartialChallengePayload(TypedDict):
+class PartialChallengeDict(TypedDict):
     description: str
     connection_info: str | None
     next_id: int | None
@@ -28,13 +28,13 @@ class PartialChallengePayload(TypedDict):
     type_data: dict[str, any] # You can ignore this
 
 
-class PartialDynamicChallengePayload(PartialChallengePayload):
+class PartialDynamicChallengeDict(PartialChallengeDict):
     initial: int
     minimum: int
     decay: int
 
 
-class ChallengePayload(BaseChallenge):
+class ChallengeDict(BaseChallengeDict):
     description: str
     connection_info: str | None
     next_id: int | None
@@ -50,7 +50,7 @@ class ChallengePayload(BaseChallenge):
     view: str # You can ignore this
 
 
-class DynamicChallengePayload(ChallengePayload):
+class DynamicChallengeDict(ChallengeDict):
     initial: int
     minimum: int
     decay: int
