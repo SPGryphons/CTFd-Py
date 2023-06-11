@@ -9,6 +9,6 @@ from CTFdPy.types.files import FileDict
 @dataclass
 class File(Model[FileDict]):
     """Represents a file"""
-    id: int = None
-    location: str = None
-    type: str = None
+    id: int
+    location: str
+    type: str

@@ -2,9 +2,11 @@ from dataclasses import dataclass
 import random
 import string
 
+from CTFdPy.models.models import Model
+
 
 @dataclass
-class User:
+class User(Model[dict[str, str]]):
     username: str
     email: str
     password: str | None = None
@@ -19,8 +21,10 @@ class User:
     def _generate_password() -> str:
         return ''.join(random.choice(string.ascii_letters) for _ in range(10))
 
-    def to_dict(self) -> dict[str, str]:
-        """Returns a dictionary representation of the user"""
+    def to_payload(self) -> dict[str, str]:
+        """Returns a dictionary representation of the user that
+        can be used to create or modify a user
+        """
         return {
             "name": self.username,
             "email": self.email,

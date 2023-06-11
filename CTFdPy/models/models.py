@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 
-DictT = TypeVar("DictT", bound=dict[str, any])
+DictT = TypeVar("DictT", bound=dict[str, Any])
 
 
 class Model(Generic[DictT]):
@@ -13,7 +13,7 @@ class Model(Generic[DictT]):
     _raw: DictT | None = None
 
     @classmethod
-    def from_dict(cls, d: DictT) -> Model:
+    def from_dict(cls, d: DictT):
         """Creates a model from a dictionary, and ingnores any extra keys"""
         c = cls(
             **{
@@ -22,6 +22,7 @@ class Model(Generic[DictT]):
             }
         )
         c._raw = d
+        return c
     
     @property
     def _to_dict(self) -> DictT:

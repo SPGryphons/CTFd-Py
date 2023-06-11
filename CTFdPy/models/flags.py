@@ -8,10 +8,10 @@ from CTFdPy.types.flags import FlagDict
 @dataclass
 class Flag(Model[FlagDict]):
     content: str
-    challenge_id: int
     
     data: str = CASE_SENSITIVE
     type: str = FlagType.static
+    challenge_id: int = None
 
     # Parameters only set by the server
     # DO NOT manually set these if not bad things will happen
@@ -41,8 +41,10 @@ class Flag(Model[FlagDict]):
         else:
             self.data = CASE_SENSITIVE
         
-    def to_dict(self) -> dict[str, str | int]:
-        """Returns a dictionary representation of the flag"""
+    def to_payload(self) -> FlagDict:
+        """Returns a dictionary representation of the flag that
+        can be used to create or modify a flag
+        """
         return {
             "challenge_id": self.challenge_id,
             "content": self.content,
