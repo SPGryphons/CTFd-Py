@@ -8,6 +8,11 @@ class TopicDict(TypedDict):
     value: str
 
 
+class ChallengeTopicDict(TopicDict):
+    challenge_id: int
+    topic_id: int
+
+
 class TopicCreateDict(TypedDict):
     id: int
     challenge: int | None
