@@ -31,6 +31,7 @@ None
 | `id` | `int` | The hint's ID. |
 | `challenge_id` | `int` | The ID of the challenge the hint is attached to. (Same value as `challenge`) |
 | `challenge` | `int` | The ID of the challenge the hint is attached to. |
+| `type` | `string` | The hint's type. (This seems to be unused, will always be `standard`) |
 
 
 ## `POST /hints`
