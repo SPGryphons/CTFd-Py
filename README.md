@@ -2,7 +2,7 @@
 
 A Python utility that seamlessly integrates with the CTFd API to streamline CTF hosting and alleviate organizers from repetitive and boring tasks.
 
-*This project is in very development and may undergo frequent changes and updates*
+*This project is in heavy development and may undergo frequent changes and updates*
 
 
 ## Installation & Usage
