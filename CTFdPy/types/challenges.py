@@ -19,7 +19,7 @@ class ChallengePreviewDict(BaseChallengeDict):
     script: str # You can ignore this
 
 
-class PartialChallengeDict(TypedDict):
+class ChallengeCreateDict(TypedDict):
     description: str
     connection_info: str | None
     next_id: int | None
@@ -28,7 +28,7 @@ class PartialChallengeDict(TypedDict):
     type_data: dict[str, any] # You can ignore this
 
 
-class PartialDynamicChallengeDict(PartialChallengeDict):
+class DynamicChallengeCreateDict(ChallengeCreateDict):
     initial: int
     minimum: int
     decay: int
