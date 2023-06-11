@@ -3,7 +3,7 @@ from CTFdPy.client import Client
 
 API_KEY = "<YOUR_API_KEY>"
 URL = "<YOUR_CTFD_URL>"
-client = Client(API_KEY, URL)
+client = Client(URL, API_KEY)
 
 # Example user creation
 handler = CSVHandler('users.csv')
