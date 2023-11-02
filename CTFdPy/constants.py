@@ -16,3 +16,10 @@ class FlagType:
 
 CASE_SENSITIVE = ""
 CASE_INSENSITIVE = "case_insensitive"
+
+
+# User constants
+
+class UserType:
+    user = "user"
+    admin = "admin"
