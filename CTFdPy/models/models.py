@@ -12,6 +12,9 @@ class Model(Generic[DictT]):
     """The base model for all models"""
     _raw: DictT | None = None
 
+    def __getitem__(self, key: str) -> Any:
+        return self.raw[key]
+
     @classmethod
     def from_dict(cls, d: DictT):
         """Creates a model from a dictionary, and ingnores any extra keys"""
