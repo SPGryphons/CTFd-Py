@@ -1,4 +1,5 @@
 # Hints Endpoints
+Last Updated: 11/6/2023
 
 Labelling hints endpoints here
 

@@ -1,4 +1,5 @@
 # Topic Endpoints
+Last Updated: 2/6/2023
 
 ## `GET /topics`
 Returns a list of all topics.
