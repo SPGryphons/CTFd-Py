@@ -63,11 +63,6 @@ class ChallengesAPI(API):
 
     def get_all(self) -> list[Challenge]:
         """Gets all challenges
-        
-        Parameters
-        ----------
-        view : str, optional
-            The view of the challenges, by default "admin"
 
         Returns
         -------
