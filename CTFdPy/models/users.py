@@ -1,18 +1,14 @@
 from dataclasses import dataclass
-import random
-import string
 from typing import Literal
 
 from CTFdPy.constants import UserType
 from CTFdPy.models.models import Model
 
 
-# TODO: Add support for teams
-
 @dataclass
 class User(Model[dict[str, str]]):
     name: str
-    email: str
+    email: str | None = None
     password: str | None = None
     type: Literal["admin", "user"] = UserType.user
 
@@ -33,14 +29,6 @@ class User(Model[dict[str, str]]):
     score: int | None = None
 
     # TODO: Add all parameters
-
-    def __post_init__(self):
-        if self.password is None or self.password == "":
-            self.password = self._generate_password()
-
-    @staticmethod
-    def _generate_password() -> str:
-        return ''.join(random.choice(string.ascii_letters) for _ in range(10))
 
     def to_payload(self) -> dict[str, str]:
         """Returns a dictionary representation of the user that

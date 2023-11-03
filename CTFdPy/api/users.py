@@ -1,4 +1,6 @@
 from __future__ import annotations
+import secrets
+import string
 from typing import Literal
 
 from CTFdPy.api.api import API
@@ -7,6 +9,11 @@ from CTFdPy.models.users import User
 
 
 class UsersAPI(API):
+    
+    @staticmethod
+    def _generate_password() -> str:
+        return ''.join(secrets.choice(string.ascii_letters) for _ in range(10))
+
     def get(self, user_id: int) -> User:
         """Gets a user by id
         
@@ -33,6 +40,34 @@ class UsersAPI(API):
         return User.from_dict(res["data"])
     
 
+    def get_visible(self) -> list[User]:
+        """Gets all visible users
+
+        NOTE: This is accessible even to non-admins
+
+        Returns
+        -------
+        list[User]
+            A list of users
+
+        Raises
+        ------
+        requests.HTTPError
+            If the request fails
+
+        """
+        res = self._get("/api/v1/users")
+
+        # NOTE:
+        # Data returned from this endpoint does not contain all the fields
+        # key fields such as email is missing.
+        # In order to get the full user data, you need to access each user individually
+
+        # TODO: Maybe create a `PartialUser` class that contains only the fields returned by this endpoint
+            
+        return [User.from_dict(user) for user in res["data"]]
+    
+
     def get_all(self) -> list[User]:
         """Gets all users
 
@@ -47,7 +82,10 @@ class UsersAPI(API):
             If the request fails
 
         """
-        res = self._get("/api/v1/users")
+        res = self._get("/api/v1/users?view=admin")
+
+        # NOTE:
+        # Refer to the note in `get_visible`
             
         return [User.from_dict(user) for user in res["data"]]
     
@@ -62,7 +100,7 @@ class UsersAPI(API):
 
     def create(
         self,
-        username: str,
+        name: str,
         email: str,
         password: str | None = None,
         type: Literal["admin", "user"] = UserType.user,
@@ -78,8 +116,8 @@ class UsersAPI(API):
         
         Parameters
         ----------
-        username : str
-            The username of the user
+        name : str
+            The name of the user
         email : str
             The email of the user
         password : str, optional
@@ -112,8 +150,11 @@ class UsersAPI(API):
             If the request fails
 
         """
+        if password is None or password == "":
+            password = self._generate_password()
+
         return self._create(
-            User(username, email, password, type, verified, banned, hidden, website, country, affiliation),
+            User(name, email, password, type, verified, banned, hidden, website, country, affiliation),
             notify
         )
     
