@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypedDict
+from typing import TYPE_CHECKING, Any, Literal, TypedDict
 
 if TYPE_CHECKING:
   from CTFdPy.client import Client
@@ -52,8 +52,8 @@ class API:
         return response
     
 
-    def _delete(self, endpoint: str) -> APIResponse:
-        response = self.session.delete(self.url + endpoint, json="")
+    def _delete(self, endpoint: str, json: dict[str, Any] | Literal[""] = "") -> APIResponse:
+        response = self.session.delete(self.url + endpoint, json=json)
 
         response.raise_for_status()
         response = response.json()
