@@ -8,7 +8,7 @@ from CTFdPy.models.models import Model
 @dataclass
 class User(Model[dict[str, str]]):
     name: str
-    email: str | None = None
+    email: str | None = None # NOTE: This is optional as it is not returned by the server unless the user is requested directly
     password: str | None = None
     type: Literal["admin", "user"] = UserType.user
 
