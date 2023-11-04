@@ -77,8 +77,3 @@ class API:
             raise Exception(response.get("errors") or response["message"])
         
         return response
-
-    
-    def login(self, username: str, password: str) -> None:
-        r = self.session.post(f"{self.url}/login", data={"name": username, "password": password})
-        r.raise_for_status()
