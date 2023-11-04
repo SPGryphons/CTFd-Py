@@ -44,8 +44,5 @@ class User(Model[dict[str, str]]):
             "website": self.website,
             "country": self.country,
             "affiliation": self.affiliation,
-            "created": self.created,
-            "place": self.place,
-            "score": self.score,
             "type": self.type
         }
