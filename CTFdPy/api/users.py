@@ -154,8 +154,42 @@ class UsersAPI(API):
             password = self._generate_password()
 
         return self._create(
-            User(name, email, password, type, verified, banned, hidden, website, country, affiliation),
+            User(
+                name=name,
+                password=password,
+                email=email,
+                type=type,
+                verified=verified,
+                banned=banned,
+                hidden=hidden,
+                website=website,
+                country=country,
+                affiliation=affiliation
+            ),
             notify
         )
     
-    # TODO: Implement update_user, delete_user
+    # TODO: Implement update_user
+
+
+    def delete(self, user_id: int) -> None:
+        """Deletes a user
+        
+        Parameters
+        ----------
+        user_id : int
+            The id of the user
+
+        Returns
+        -------
+        bool
+            Whether the user was deleted successfully
+
+        Raises
+        ------
+        requests.HTTPError
+            If the request fails
+
+        """
+        res = self._delete(f"/api/v1/users/{user_id}")
+        return res["success"]
