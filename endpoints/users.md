@@ -1,5 +1,5 @@
 # Users Endpoints
-Last Updated: 3/11/2023
+Last Updated: 5/11/2023
 
 ## `GET /users`
 Returns all visible users.
@@ -52,9 +52,9 @@ Creates a new user.
 | `name` | `string` | The name of the user. |
 | `email` | `string` | The email of the user. |
 | `password` | `string` | The password of the user. |
-| `website` | `string` | The website of the user. |
-| `affiliation` | `string` | The affiliation of the user. |
-| `country` | `string` | The country of the user. |
+| `website` | `string` | The website of the user. (Optional) |
+| `affiliation` | `string` | The affiliation of the user. (Optional) |
+| `country` | `string` | The country of the user. (Optional) |
 | `type` | `string` | The type of the user. |
 | `verified` | `bool` | Whether the user is verified. |
 | `hidden` | `bool` | Whether the user is hidden. |
@@ -136,7 +136,7 @@ None
     "banned": true,
     "verified": true,
     "hidden": true,
-    "place": 0,
+    "place": "string",
     "score": 0
   }
 }
@@ -162,7 +162,7 @@ None
 | `banned` | `bool` | Whether the user is banned. |
 | `verified` | `bool` | Whether the user is verified. |
 | `hidden` | `bool` | Whether the user is hidden. |
-| `place` | `int` | The place of the user. |
+| `place` | `string` | The place of the user. |
 | `score` | `int` | The score of the user. |
 
 
