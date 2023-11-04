@@ -25,6 +25,7 @@ class Client:
         self._flags_api = FlagsAPI(self)
         self._hints_api = HintsAPI(self)
         self._tags_api = TagsAPI(self)
+        self._teams_api = TeamsAPI(self)
         self._topics_api = TopicsAPI(self)
         self._users_api = UsersAPI(self)
 
@@ -53,6 +54,11 @@ class Client:
     def tags(self) -> TagsAPI:
         return self._tags_api
     
+
+    @property
+    def teams(self) -> TeamsAPI:
+        return self._teams_api
+
 
     @property
     def topics(self) -> TopicsAPI:
