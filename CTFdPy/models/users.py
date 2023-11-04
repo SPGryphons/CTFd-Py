@@ -3,13 +3,12 @@ from typing import Literal
 
 from CTFdPy.constants import UserType
 from CTFdPy.models.models import Model
+from CTFdPy.types.users import UserDict, UserPayload
 
 
 @dataclass
-class User(Model[dict[str, str]]):
+class User(Model[UserDict]):
     name: str
-    email: str | None = None # NOTE: This is optional as it is not returned by the server unless the user is requested directly
-    password: str | None = None
     type: Literal["admin", "user"] = UserType.user
 
     verified: bool = False
@@ -17,6 +16,8 @@ class User(Model[dict[str, str]]):
     hidden: bool = False
 
     # Optional properties
+    email: str | None = None # NOTE: This is optional as it is not returned by the server unless the user is requested directly
+    password: str | None = None
     website: str | None = None
     country: str | None = None
     affiliation: str | None = None
@@ -30,19 +31,24 @@ class User(Model[dict[str, str]]):
 
     # TODO: Add all parameters
 
-    def to_payload(self) -> dict[str, str]:
+    def to_payload(self) -> UserPayload:
         """Returns a dictionary representation of the user that
         can be used to create or modify a user
         """
+        keys = (
+            "name",
+            "password",
+            "email",
+            "website",
+            "country",
+            "affiliation",
+            "type",
+            "hidden",
+            "banned"
+        )
+
         return {
-            "name": self.name,
-            "email": self.email,
-            "password": self.password,
-            "verified": self.verified,
-            "banned": self.banned,
-            "hidden": self.hidden,
-            "website": self.website,
-            "country": self.country,
-            "affiliation": self.affiliation,
-            "type": self.type
+            key: getattr(self, key)
+            for key in keys
+            if getattr(self, key) is not None
         }
