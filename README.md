@@ -9,7 +9,11 @@ A Python utility that seamlessly integrates with the CTFd API to streamline CTF 
 
 ```bash
 git clone https://github.com/SPGryphons/CTFdPy.git
-pip install -r requirements.txt
+cd CTFdPy
+# Windows
+py -m pip install .
+# Linux
+pip install .
 ```
 
 
