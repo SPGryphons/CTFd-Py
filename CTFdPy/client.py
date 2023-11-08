@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 import requests
 
 from CTFdPy.api import *
@@ -28,6 +30,28 @@ class Client:
         self._teams_api = TeamsAPI(self)
         self._topics_api = TopicsAPI(self)
         self._users_api = UsersAPI(self)
+
+
+    @classmethod
+    def from_env(cls) -> Client:
+        """Creates a client from environment variables
+
+        Returns
+        -------
+        Client
+            The client
+
+        Raises
+        ------
+        ValueError
+            If neither token nor credentials are provided
+
+        """
+        return cls(
+            url=os.environ.get("CTFDPY_URL", "http://localhost:8080"),
+            token=os.environ.get("CTFDPY_TOKEN"),
+            credentials=(os.environ.get("CTFDPY_USERNAME"), os.environ.get("CTFDPY_PASSWORD"))
+        )
 
 
     @property
