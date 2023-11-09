@@ -89,9 +89,11 @@ class FilesAPI(API):
             else:
                 raise ValueError("File must be a path or a readable")
             
-            files.append(("file", (f.name, f)))
+            name = os.path.basename(f.name)
 
-        res = self._post_form("/api/v1/files", data={"challenge_id": challenge_id}, files=files)
+            files.append(("file", (name, f)))
+
+        res = self._post_form("/api/v1/files", data={"challenge": challenge_id, "type": "challenge"}, files=files)
         return res["success"]
     
 
