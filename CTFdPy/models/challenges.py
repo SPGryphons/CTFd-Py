@@ -118,10 +118,10 @@ class Challenge(Model[ChallengeDict | DynamicChallengeDict], BaseChallenge):
             raise ValueError("Invalid challenge type")
         
 
-    def set_requirements(self, prerequisites: list[Challenge], anonymize: Literal[True] | None = None):
+    def set_requirements(self, prerequisites: list[BaseChallenge], anonymize: Literal[True] | None = None):
         requirements = {"prerequisites": []}
         for prerequisite in prerequisites:
-            if not isinstance(prerequisite, Challenge):
+            if not isinstance(prerequisite, BaseChallenge):
                 raise ValueError("Prerequisites must be of type Challenge")
             if prerequisite.id is None:
                 raise ValueError("Challenge must be created before it can be used as a prerequisite")
