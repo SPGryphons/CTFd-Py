@@ -1,5 +1,5 @@
 # Files Endpoints
-Last Updated: 4/6/2023
+Last Updated: 9/11/2023
 
 Labelling files endpoints here
 
@@ -38,7 +38,7 @@ Create a new file
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `file` | `File` | The file to upload. |
-| `challenge_id` | `int` | The ID of the challenge to upload the file to. |
+| `challenge` | `int` | The ID of the challenge to upload the file to. |
 | `type` | `string` | The type of the file. Not exactly documented, seems to always be `challenge` |
 
 **Note: This is not sent with a normal JSON payload, it instead uses the a `multipart/form-data` content type.
