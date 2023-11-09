@@ -303,27 +303,25 @@ class ChallengesAPI(API):
         
         if flag is not None:
             flags = [(flag, flag_type, case_insensitive)]
-        elif flags is not None:
-            flags = []
-        else:
+        elif flags is None:
             raise ValueError("Must specify either flag or flags")
         flags = [Flag(flag, CASE_INSENSITIVE if case_insensitive else CASE_SENSITIVE, flag_type) for flag, flag_type, case_insensitive in flags]
 
         # Create hints
         if hints is not None:
-            hints = [Hint(None, content, cost) for content, cost in hints]
+            hints = [Hint(content=content, cost=cost, challenge_id=None) for content, cost in hints]
 
         # Create tags
         if tags is not None:
-            tags = [Tag(None, tag) for tag in tags]
+            tags = [Tag(value=tag, challenge_id=None) for tag in tags]
 
         # Create topics
         if topics is not None:
-            topics = [ChallengeTopic(None, topic) for topic in topics]
+            topics = [ChallengeTopic(value=topic, challenge_id=None) for topic in topics]
 
         # Create requirements
         if requirements is not None:
-            requirements = [Hint(challenge.id) for challenge in requirements]
+            challenge.set_requirements(requirements)
 
         return self._create(
             challenge, flags, hints, tags, topics, files, hints_ordered=hints_ordered, delete_on_error=delete_on_error
